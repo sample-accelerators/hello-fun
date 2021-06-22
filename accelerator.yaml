@@ -1,0 +1,68 @@
+accelerator:
+  displayName: Hello Fun
+  description: A simple Spring Cloud Function serverless app
+  iconUrl: https://raw.githubusercontent.com/simple-starters/icons/master/icon-cloud.png
+  tags:
+  - java
+  - spring
+  - cloud
+  - function
+  - serverless
+
+  # options for the UI
+  options:
+  - name: deploymentType
+    inputType: select
+    choices:
+      none: Skip Kubernetes deployment
+      k8s-simple: Kubernetes deployment and service
+      knative: Knative service
+    defaultValue: k8s-simple
+    required: true
+
+engineV2:
+  sources:
+  - includes: [ "**" ]
+    excludes: [ "kubernetes/**" ]
+  - includes: [ "pom.xml" ]
+    transformations:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+  - includes: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+    condition: "#deploymentType == 'k8s-simple'"
+    transformations:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "'kubernetes/' + #filename"
+  - includes: [ "kubernetes/k8s/skaffold.yaml" ]
+    condition: "#deploymentType == 'k8s-simple'"
+    transformations:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - includes: [ "kubernetes/knative/service.yaml" ]
+    condition: "#deploymentType == 'knative'"
+    transformations:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "'kubernetes/' + #filename"
+  - includes: [ "kubernetes/knative/skaffold.yaml" ]
+    condition: "#deploymentType == 'knative'"
+    transformations:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "#filename"

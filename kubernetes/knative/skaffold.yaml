@@ -1,0 +1,11 @@
+apiVersion: skaffold/v2beta15
+kind: Config
+metadata:
+  name: hello-fun
+build:
+  artifacts:
+  - image: hello-fun
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes/service.yaml
