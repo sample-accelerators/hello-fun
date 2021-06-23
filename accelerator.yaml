@@ -22,47 +22,66 @@ accelerator:
 
 engine:
   sources:
-  - includes: [ "**" ]
-    excludes: [ "kubernetes/**" ]
-  - includes: [ "pom.xml" ]
-    transformations:
-    - type: ReplaceText
-      substitutions:
-      - text: hello-fun
-        with: "#artifactId"
-  - includes: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
-    condition: "#deploymentType == 'k8s-simple'"
-    transformations:
-    - type: ReplaceText
-      substitutions:
-      - text: hello-fun
-        with: "#artifactId"
-    - type: RewritePath
-      rewriteTo: "'kubernetes/' + #filename"
-  - includes: [ "kubernetes/k8s/skaffold.yaml" ]
-    condition: "#deploymentType == 'k8s-simple'"
-    transformations:
-    - type: ReplaceText
-      substitutions:
-      - text: hello-fun
-        with: "#artifactId"
-    - type: RewritePath
-      rewriteTo: "#filename"
-  - includes: [ "kubernetes/knative/service.yaml" ]
-    condition: "#deploymentType == 'knative'"
-    transformations:
-    - type: ReplaceText
-      substitutions:
-      - text: hello-fun
-        with: "#artifactId"
-    - type: RewritePath
-      rewriteTo: "'kubernetes/' + #filename"
-  - includes: [ "kubernetes/knative/skaffold.yaml" ]
-    condition: "#deploymentType == 'knative'"
-    transformations:
-    - type: ReplaceText
-      substitutions:
-      - text: hello-fun
-        with: "#artifactId"
-    - type: RewritePath
-      rewriteTo: "#filename"
+    - includes: [ "**" ]
+      excludes: [ "README.md", "kubernetes/**" ]
+    - includes: [ "pom.xml" ]
+      transformations:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+    - includes: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+      condition: "#deploymentType == 'k8s-simple'"
+      transformations:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'kubernetes/' + #filename"
+    - includes: [ "kubernetes/k8s/skaffold.yaml", "kubernetes/k8s/Tiltfile" ]
+      condition: "#deploymentType == 'k8s-simple'"
+      transformations:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "#filename"
+    - includes: [ "kubernetes/knative/service.yaml" ]
+      condition: "#deploymentType == 'knative'"
+      transformations:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'kubernetes/' + #filename"
+    - includes: [ "kubernetes/knative/skaffold.yaml" ]
+      condition: "#deploymentType == 'knative'"
+      transformations:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "#filename"
+    - name: README
+      type: Mega
+      onConflict: Append
+      sources:
+      - includes: [ "README.md"]
+      - includes: [ "kubernetes/k8s/DEPLOYING.md" ]
+        condition: "#deploymentType == 'k8s-simple'"
+        transformations:
+        - type: RewritePath
+          rewriteTo: "'README.md'"
+      - includes: [ "kubernetes/knative/DEPLOYING.md" ]
+        condition: "#deploymentType == 'knative'"
+        transformations:
+        - type: ReplaceText
+          substitutions:
+          - text: hello-fun
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
