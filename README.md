@@ -8,7 +8,7 @@ It can be deployed as a standalone web app, as a Kubernetes Deployment and Servi
 
 > **NOTE**: The project is configured for Java 11, if you are using Java 8, then modify the `java.version` property in `pom.xml`.
 
-The project contains the following:
+The project contains the following code layout:
 
 ```text
 .
@@ -31,9 +31,9 @@ The project contains the following:
                 └── example
                     └── helloapp
                         └── HelloAppApplicationTests.java
-
-12 directories, 7 files
 ```
+
+It also contains some deployment manifests, depending on the deploymentType selected when generating the project.
 
 You can modify the source code using [Visual Studio Code](https://code.visualstudio.com/):
 
@@ -62,18 +62,3 @@ You can access the function using `curl`:
 ```bash
 curl -w'\n' -H 'Content-Type: text/plain' localhost:8080 -d "Fun"
 ```
-
-## Kubernetes Deployment and Service
-
-<img src="https://kubernetes.io/images/kubernetes-horizontal-color.png"
-     alt="Kubernetes" width="400" />
-
-You can containerize this template app and deploy it as a Deployment and Service on Kubernetes.
-See the [Spring Boot Kubernetes](https://spring.io/guides/gs/spring-boot-kubernetes/) Guide for details.
-
-## Knative Service
-
-![Knative Logo](https://avatars.githubusercontent.com/u/35583233?s=200&v=4)
-
-You can containerize this template app and deploy it as a Knative Service.
-See the [Hello World - Spring Boot Java](https://knative.dev/docs/serving/samples/hello-world/helloworld-java-spring/) sample for details.
