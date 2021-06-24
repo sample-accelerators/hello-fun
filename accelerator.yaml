@@ -20,7 +20,7 @@ accelerator:
     defaultValue: k8s-simple
     required: true
 
-engineV2:
+engine:
   sources:
   - includes: [ "**" ]
     excludes: [ "kubernetes/**" ]
