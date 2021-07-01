@@ -1,6 +1,6 @@
 # hello-fun template repo
 
-This template repo provides a simple Hello web app based on Spring Boot and Spring Cloud Function.
+This repo provides a simple Hello web app based on Spring Boot and Spring Cloud Function.
 
 It can be deployed as a standalone web app, as a Kubernetes Deployment and Service, or as a Knative Service.
 

@@ -71,6 +71,11 @@ engine:
       onConflict: Append
       sources:
       - includes: [ "README.md"]
+        transformations:
+        - type: ReplaceText
+          substitutions:
+          - text: hello-fun template repo
+            with: "#artifactId"
       - includes: [ "kubernetes/k8s/DEPLOYING.md" ]
         condition: "#deploymentType == 'k8s-simple'"
         transformations:
