@@ -8,13 +8,15 @@ See the [Spring Boot Kubernetes](https://spring.io/guides/gs/spring-boot-kuberne
 
 We have included both `skaffold.yaml` and `Tiltfile` files to make this easier when deploying to a local cluster like [minikube](https://minikube.sigs.k8s.io/) or [kind](https://kind.sigs.k8s.io/).
 
+You can install Skaffold by following these instructions: https://skaffold.dev/docs/install/
+
 ### Deploying to local cluster using Tilt
 
 You can install Tilt by following these instructions: https://docs.tilt.dev/install.html
 
 You also need to have `pack` from Cloud Native Buildpacks installed, see: https://buildpacks.io/docs/tools/pack/
 
-To deploy the app run:
+To build and deploy the app run:
 
 ```
 tilt up
@@ -30,12 +32,28 @@ tilt down
 
 ### Deploying to local cluster using Skaffold
 
-You can install Skaffold by following these instructions: https://skaffold.dev/docs/install/
-
-To deploy the app run:
+To build and deploy the app run:
 
 ```
-skaffold run -p local --port-forward
+skaffold run -p local --default-repo dev.local --port-forward
+```
+
+To uninstall the app run:
+
+```
+skaffold delete
+```
+
+### Deploying as a native image to local cluster using Skaffold
+
+> **NOTE:** The native image compilation is resource intensive and takes several minutes.
+
+See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
+
+To build and deploy the app as a native image run:
+
+```
+skaffold run -p local -p native --default-repo dev.local --port-forward
 ```
 
 To uninstall the app run:
