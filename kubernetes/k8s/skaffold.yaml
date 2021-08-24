@@ -6,7 +6,11 @@ build:
   artifacts:
   - image: hello-fun
     custom:
-      buildCommand: ./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
+      buildCommand: |-
+        ./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
+        if [ $PUSH_IMAGE ]; then
+          docker push $IMAGE
+        fi
       dependencies:
         paths:
           - src
@@ -32,7 +36,11 @@ profiles:
     artifacts:
     - image: hello-fun
       custom:
-        buildCommand: ./mvnw spring-boot:build-image -Pnative-buildpack -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
+        buildCommand: |-
+          ./mvnw spring-boot:build-image -Pnative-buildpack -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
+          if [ $PUSH_IMAGE ]; then
+            docker push $IMAGE
+          fi
         dependencies:
           paths:
             - src

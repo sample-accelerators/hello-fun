@@ -30,30 +30,42 @@ To uninstall the app run:
 tilt down
 ```
 
-### Deploying to local cluster using Skaffold
+### Deploying to a cluster using Skaffold
 
-To build and deploy the app run:
+To build and deploy the app to a local cluster run:
 
 ```
 skaffold run -p local --default-repo dev.local --port-forward
 ```
 
+To build and deploy the app to a remote cluster run:
+
+```
+skaffold run --default-repo <your-docker-id> --port-forward
+```
+
 To uninstall the app run:
 
 ```
 skaffold delete
 ```
 
-### Deploying as a native image to local cluster using Skaffold
+### Deploying as a native image to a cluster using Skaffold
 
 > **NOTE:** The native image compilation is resource intensive and takes several minutes.
 
 See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
 
-To build and deploy the app as a native image run:
+To build and deploy the app as a native image to a local cluster run:
 
 ```
 skaffold run -p local -p native --default-repo dev.local --port-forward
+```
+
+To build and deploy the app as a native image to a remote cluster run:
+
+```
+skaffold run -p native --default-repo <your-docker-id> --port-forward
 ```
 
 To uninstall the app run:
@@ -62,7 +74,7 @@ To uninstall the app run:
 skaffold delete
 ```
 
-### Accessing the app deployed to local cluster
+### Accessing the app deployed to your cluster
 
 If you don't have `curl` installed it can be installed using downloads here: https://curl.se/download.html
 

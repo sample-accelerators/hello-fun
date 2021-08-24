@@ -23,6 +23,16 @@ accelerator:
     defaultValue: k8s-simple
     required: true
 
+  - name: enableAppLiveView
+    label: App Live View
+    dependsOn:
+      name: deploymentType
+      value: knative
+    description: Toggle "On" to enable Application Live View integration.
+    inputType: toggle
+    dataType: boolean
+    defaultValue: false
+
 engine:
   merge:
     - include: [ "**" ]
@@ -52,7 +62,7 @@ engine:
       - type: RewritePath
         rewriteTo: "#filename"
     - include: [ "kubernetes/knative/service.yaml" ]
-      condition: "#deploymentType == 'knative'"
+      condition: "#deploymentType == 'knative' and !#enableAppLiveView"
       chain:
       - type: ReplaceText
         substitutions:
@@ -60,6 +70,20 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "'kubernetes/' + #filename"
+    - include: [ "kubernetes/knative/service-alv.yaml" ]
+      condition: "#deploymentType == 'knative' and #enableAppLiveView"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'kubernetes/service.yaml'"
+    - include: [ "kubernetes/knative/application.properties" ]
+      condition: "#deploymentType == 'knative' and #enableAppLiveView"
+      chain:
+      - type: RewritePath
+        rewriteTo: "'src/main/resources/' + #filename"
     - include: [ "kubernetes/knative/skaffold.yaml" ]
       condition: "#deploymentType == 'knative'"
       chain:

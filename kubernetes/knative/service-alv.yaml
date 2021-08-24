@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: hello-fun
+spec:
+  template:
+    metadata:
+      labels:
+        tanzu.app.live.view: "true"
+        tanzu.app.live.view.application.name: hello-fun
+    spec:
+      containers:
+        - image: hello-fun
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
