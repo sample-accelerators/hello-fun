@@ -58,7 +58,7 @@ See the [System Requirements](https://docs.spring.io/spring-native/docs/current/
 To build and deploy the app to a remote or local cluster run:
 
 ```
-skaffold run -p native --default-repo ${REGISTRY_PREFIX}
+skaffold run -p native --default-repo ${REGISTRY_PREFIX} --tag native
 ```
 
 To uninstall the app run:
