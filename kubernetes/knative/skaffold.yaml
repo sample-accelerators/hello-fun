@@ -21,10 +21,6 @@ deploy:
     - kubernetes/service.yaml
 
 profiles:
-- name: local
-  build:
-    local:
-      push: false
 - name: native
   build:
     artifacts:

@@ -37,13 +37,7 @@ skaffold run --default-repo ${REGISTRY_PREFIX} --port-forward --tail
 
 ### Deploying to a cluster using Skaffold
 
-To build and deploy the app to a local cluster run:
-
-```
-skaffold run -p local --default-repo ${REGISTRY_PREFIX}
-```
-
-To build and deploy the app to a remote cluster run:
+To build and deploy the app to a remote or local cluster run:
 
 ```
 skaffold run --default-repo ${REGISTRY_PREFIX}
@@ -61,17 +55,7 @@ skaffold delete
 
 See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
 
-#### Local cluster deployment
-
-To build and deploy the app to a local cluster run:
-
-```
-skaffold run -p local -p native --default-repo ${REGISTRY_PREFIX}
-```
-
-#### Remote cluster deployment
-
-To build and deploy the app to a remote cluster run:
+To build and deploy the app to a remote or local cluster run:
 
 ```
 skaffold run -p native --default-repo ${REGISTRY_PREFIX}
