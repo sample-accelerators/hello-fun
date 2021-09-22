@@ -15,6 +15,8 @@ build:
         paths:
           - src
           - pom.xml
+  tagPolicy:
+    sha256: {}
 deploy:
   kubectl:
     manifests:
