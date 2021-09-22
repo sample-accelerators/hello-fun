@@ -8,9 +8,7 @@ build:
     custom:
       buildCommand: |-
         ./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
-        if [ $PUSH_IMAGE ]; then
-          docker push $IMAGE
-        fi
+        docker push $IMAGE
       dependencies:
         paths:
           - src
@@ -28,9 +26,7 @@ profiles:
       custom:
         buildCommand: |-
           ./mvnw spring-boot:build-image -Pnative-buildpack -DskipTests -Dspring-boot.build-image.imageName=$IMAGE
-          if [ $PUSH_IMAGE ]; then
-            docker push $IMAGE
-          fi
+          docker push $IMAGE
         dependencies:
           paths:
             - src
