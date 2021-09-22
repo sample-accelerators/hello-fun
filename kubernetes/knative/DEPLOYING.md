@@ -11,33 +11,7 @@ We have included a `skaffold.yaml` file to make it easier to deploy the function
 
 You can install Skaffold by following these instructions: https://skaffold.dev/docs/install/
 
-### Deploying to a cluster using Skaffold
-
-To build and deploy the app to a local cluster run:
-
-```
-skaffold run -p local --default-repo dev.local
-```
-
-To build and deploy the app to a remote cluster run:
-
-```
-skaffold run --default-repo <your-docker-id>
-```
-
-To uninstall the app run:
-
-```
-skaffold delete
-```
-
-### Deploying as a native image to a cluster using Skaffold
-
-> **NOTE:** The native image compilation is resource intensive and takes several minutes.
-
-See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
-
-#### Specifying image repo
+### Specifying image repo with skaffold
 
 You need to specify the `default-repo` which is the registry prefix for the image that is being built. For Docker Hub the prefix would be your Docker ID, for other registries it would typically be the registry URL plus your project.
 
@@ -60,6 +34,32 @@ Finally, you can specify it as part of the `run` command:
 ```bash
 skaffold run --default-repo ${REGISTRY_PREFIX} --port-forward --tail
 ```
+
+### Deploying to a cluster using Skaffold
+
+To build and deploy the app to a local cluster run:
+
+```
+skaffold run -p local --default-repo ${REGISTRY_PREFIX}
+```
+
+To build and deploy the app to a remote cluster run:
+
+```
+skaffold run --default-repo ${REGISTRY_PREFIX}
+```
+
+To uninstall the app run:
+
+```
+skaffold delete
+```
+
+### Deploying as a native image to a cluster using Skaffold
+
+> **NOTE:** The native image compilation is resource intensive and takes several minutes.
+
+See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
 
 #### Local cluster deployment
 
