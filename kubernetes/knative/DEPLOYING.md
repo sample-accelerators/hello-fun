@@ -37,16 +37,44 @@ skaffold delete
 
 See the [System Requirements](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks-system-requirements) note in the Spring Native documentation for suggestions on Docker configuration.
 
+#### Specifying image repo
+
+You need to specify the `default-repo` which is the registry prefix for the image that is being built. For Docker Hub the prefix would be your Docker ID, for other registries it would typically be the registry URL plus your project.
+
+> **NOTE**: You must specify a registry prefix where you have permission to push images.
+
+You can do this globally by running:
+
+```bash
+skaffold config set --global default-repo ${REGISTRY_PREFIX}
+```
+
+Or, you can set it for the current Kubernetes context:
+
+```bash
+skaffold config set default-repo ${REGISTRY_PREFIX}
+```
+
+Finally, you can specify it as part of the `run` command:
+
+```bash
+skaffold run --default-repo ${REGISTRY_PREFIX} --port-forward --tail
+```
+
+#### Local cluster deployment
+
 To build and deploy the app to a local cluster run:
 
 ```
-skaffold run -p local -p native --default-repo dev.local
+skaffold run -p local -p native --default-repo ${REGISTRY_PREFIX}
 ```
+
+#### Remote cluster deployment
 
 To build and deploy the app to a remote cluster run:
 
 ```
-skaffold run -p native --default-repo <your-docker-id>
+skaffold run -p native --default-repo ${REGISTRY_PREFIX}
 ```
 
 To uninstall the app run:
