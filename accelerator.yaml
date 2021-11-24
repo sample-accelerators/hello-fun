@@ -29,7 +29,7 @@ accelerator:
       name: deploymentType
       value: knative
     description: Toggle "On" to enable Application Live View integration.
-    inputType: toggle
+    inputType: checkbox
     dataType: boolean
     defaultValue: false
 
