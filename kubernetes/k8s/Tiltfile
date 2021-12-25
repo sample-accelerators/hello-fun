@@ -1,6 +1,8 @@
-load('ext://pack', 'pack')
+allow_k8s_contexts(os.getenv("CURRENT_CONTEXT", default='kind-kind'))
+default_registry(os.getenv("DEFAULT_REGISTRY", default='dev.local'))
 
-pack('hello-fun:latest')
+load('ext://pack', 'pack')
+pack('hello-fun')
 
 k8s_yaml(['kubernetes/deployment.yaml', 'kubernetes/service.yaml'])
 k8s_resource('hello-fun', port_forwards=8080)
