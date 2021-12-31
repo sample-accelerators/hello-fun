@@ -7,8 +7,6 @@ We have included a `Tiltfile` file to make this easier when deploying to a clust
 
 For best results use Tilt version v0.23.2 or later. You can install Tilt by following these instructions: https://docs.tilt.dev/install.html
 
-You also need to have `pack` from Cloud Native Buildpacks installed, see: https://buildpacks.io/docs/tools/pack/
-
 To set up the deployment environment set the CURRENT_CONTEXT and DEFAULT_REGISTRY environment variables.
 
 Set CURRENT_CONTEXT using:
