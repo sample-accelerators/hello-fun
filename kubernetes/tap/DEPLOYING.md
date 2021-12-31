@@ -58,7 +58,7 @@ When you are done developing your function app, you can simply deploy it using:
 tanzu apps workload apply -f kubernetes/workload.yaml
 ```
 
-If you would like deploy the code from tyour local workin directory you can use the following command:
+If you would like deploy the code from your local working directory you can use the following command:
 
 ```
 tanzu apps workload create hello-fun -f kubernetes/workload.yaml \
