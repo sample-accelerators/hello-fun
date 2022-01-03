@@ -1,6 +1,6 @@
 accelerator:
   displayName: Hello Fun
-  description: A simple Spring Cloud Function serverless app -- includes option for native build
+  description: A simple Spring Cloud Function serverless app
   iconUrl: https://raw.githubusercontent.com/sample-accelerators/icons/master/icon-cloud.png
   tags:
   - java
@@ -8,35 +8,26 @@ accelerator:
   - cloud
   - function
   - serverless
+  - tanzu
 
   # options for the UI
   options:
   - name: deploymentType
     inputType: select
     choices:
-    - value: none
-      text: Skip Kubernetes deployment
+    - value: workload
+      text: TAP workload
     - value: k8s-simple
       text: Kubernetes deployment and service
-    - value: knative
-      text: Knative service
-    defaultValue: k8s-simple
+    - value: none
+      text: Skip Kubernetes deployment
+    defaultValue: workload
     required: true
-
-  - name: enableAppLiveView
-    label: App Live View
-    dependsOn:
-      name: deploymentType
-      value: knative
-    description: Toggle "On" to enable Application Live View integration.
-    inputType: checkbox
-    dataType: boolean
-    defaultValue: false
 
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "README.md", "kubernetes/**" ]
+      exclude: [ "pom.xml", "README.md", "kubernetes/**", "catalog/*.yaml" ]
     - include: [ "pom.xml" ]
       chain:
       - type: ReplaceText
@@ -52,7 +43,7 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "'kubernetes/' + #filename"
-    - include: [ "kubernetes/k8s/skaffold.yaml", "kubernetes/k8s/Tiltfile" ]
+    - include: [ "kubernetes/k8s/Tiltfile" ]
       condition: "#deploymentType == 'k8s-simple'"
       chain:
       - type: ReplaceText
@@ -61,31 +52,25 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "#filename"
-    - include: [ "kubernetes/knative/service.yaml" ]
-      condition: "#deploymentType == 'knative' and !#enableAppLiveView"
+    - include: [ "kubernetes/tap/workload.yaml" ]
+      condition: "#deploymentType == 'workload'"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: hello-fun
-          with: "#artifactId"
+        - text: ": hello-fun"
+          with: "': ' + #artifactId"
       - type: RewritePath
         rewriteTo: "'kubernetes/' + #filename"
-    - include: [ "kubernetes/knative/service-alv.yaml" ]
-      condition: "#deploymentType == 'knative' and #enableAppLiveView"
+    - include: [ "kubernetes/tap/Tiltfile" ]
+      condition: "#deploymentType == 'workload'"
       chain:
       - type: ReplaceText
         substitutions:
         - text: hello-fun
           with: "#artifactId"
       - type: RewritePath
-        rewriteTo: "'kubernetes/service.yaml'"
-    - include: [ "kubernetes/knative/application.properties" ]
-      condition: "#deploymentType == 'knative' and #enableAppLiveView"
-      chain:
-      - type: RewritePath
-        rewriteTo: "'src/main/resources/' + #filename"
-    - include: [ "kubernetes/knative/skaffold.yaml" ]
-      condition: "#deploymentType == 'knative'"
+        rewriteTo: "#filename"
+    - include: [ "catalog/*.yaml" ]
       chain:
       - type: ReplaceText
         substitutions:
@@ -108,8 +93,8 @@ engine:
         chain:
         - type: RewritePath
           rewriteTo: "'README.md'"
-      - include: [ "kubernetes/knative/DEPLOYING.md" ]
-        condition: "#deploymentType == 'knative'"
+      - include: [ "kubernetes/tap/DEPLOYING.md" ]
+        condition: "#deploymentType == 'workload'"
         chain:
         - type: ReplaceText
           substitutions:

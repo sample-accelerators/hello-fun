@@ -2,59 +2,42 @@
 
 This repo provides a simple Hello web app based on Spring Boot and Spring Cloud Function.
 
-It can be deployed as a standalone web app, as a Kubernetes Deployment and Service, or as a Knative Service.
+It can be deployed as a standalone web app, as a Tanzu Application Platform workload resource or, as a Kubernetes Deployment and Service.
 
 ## The code
 
-> **NOTE**: The project is configured for Java 11, if you are using Java 8, then modify the `java.version` property in `pom.xml`.
+> **NOTE**: The project is configured for Java 11, if you prefer a different version, then modify the `java.version` property in `pom.xml`.
 
-The project contains the following code layout:
+The project contains the following Spring Cloud Function bean definition:
 
 ```text
-.
-├── README.md
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── com
-    │   │       └── example
-    │   │           └── helloapp
-    │   │               └── HelloAppApplication.java
-    │   └── resources
-    │       └── application.properties
-    └── test
-        └── java
-            └── com
-                └── example
-                    └── helloapp
-                        └── HelloAppApplicationTests.java
+	@Bean
+	public Function<String, String> hello() {
+		return (in) -> {
+			return "Hello " + in;
+		};
+	}
 ```
 
-It also contains some deployment manifests, depending on the deploymentType selected when generating the project.
+This simple function returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function can do. 
+It is defined in `src/main/java/com/example/helloapp/HelloAppApplication.java`
 
-You can modify the source code using [Visual Studio Code](https://code.visualstudio.com/):
+## Deployment
+
+This app can be deployed as a stand-alone web app, as a Tanzu Application Platform (TAP) workload resource or, as a Kubernetes Deployment and Service.
+
+### Standalone app with embedded Tomcat server
+
+You can build the project using Maven:
 
 ```bash
-code .
+mvn clean package
 ```
-
-The Function that is used by this app is located at `src/main/java/com/example/helloapp/HelloAppApplication.java`
-
-You can build the project using the provided Maven wrapper:
-
-```bash
-./mvnw clean package
-```
-
-## Standalone app with embedded Tomcat server
 
 To run the app using the embedded Tomcat server you can run this command:
 
 ```bash
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 You can access the function using `curl`:
