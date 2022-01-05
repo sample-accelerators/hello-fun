@@ -60,7 +60,7 @@ engine:
         - text: ": hello-fun"
           with: "': ' + #artifactId"
       - type: RewritePath
-        rewriteTo: "'kubernetes/' + #filename"
+        rewriteTo: "'config/' + #filename"
     - include: [ "kubernetes/tap/Tiltfile" ]
       condition: "#deploymentType == 'workload'"
       chain:
@@ -76,8 +76,6 @@ engine:
         substitutions:
         - text: hello-fun
           with: "#artifactId"
-      - type: RewritePath
-        rewriteTo: "#filename"
     - name: README
       type: Combo
       onConflict: Append

@@ -50,18 +50,18 @@ This depends on the TAP installation having DNS configured for the Knative ingre
 
 ### Deploying to Kubernetes as a TAP workload with Tanzu CLI
 
-If you make modifications to the source and push to your own Git repository, then you can update the `spec.source.git` information in the `kubernetes/workload.yaml` file.
+If you make modifications to the source and push to your own Git repository, then you can update the `spec.source.git` information in the `config/workload.yaml` file.
 
 When you are done developing your function app, you can simply deploy it using:
 
 ```
-tanzu apps workload apply -f kubernetes/workload.yaml
+tanzu apps workload apply -f config/workload.yaml
 ```
 
 If you would like deploy the code from your local working directory you can use the following command:
 
 ```
-tanzu apps workload create hello-fun -f kubernetes/workload.yaml \
+tanzu apps workload create hello-fun -f config/workload.yaml \
   --local-path . \
   --source-image <REPOSITORY-PREFIX>/hello-fun-source \
   --type web
