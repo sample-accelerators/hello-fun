@@ -1,5 +1,7 @@
 ### Deploying to Kubernetes as a TAP workload with Tilt
 
+> NOTE: The provided `config/workload.yaml` file uses the Git URL for this sample. When you want to modify the source, you must push the code to your own Git repository and then update the `spec.source.git` information in the `config/workload.yaml` file.
+
 You can containerize this template app and deploy it as a Tanzu Application Platform (TAP) workload.
 You need to have TAP installed on your cluster.
 See the [VMware Tanzu Application Platform documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/index.html) for details.
