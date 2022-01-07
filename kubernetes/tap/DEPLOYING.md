@@ -1,54 +1,29 @@
-### Deploying to Kubernetes as a TAP workload with Tilt
+### Deploying to Kubernetes using VMware Tanzu Developer Tools for Visual Studio Code
 
-> NOTE: The provided `config/workload.yaml` file uses the Git URL for this sample. When you want to modify the source, you must push the code to your own Git repository and then update the `spec.source.git` information in the `config/workload.yaml` file.
-
-You can containerize this template app and deploy it as a Tanzu Application Platform (TAP) workload.
-You need to have TAP installed on your cluster.
-See the [VMware Tanzu Application Platform documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/index.html) for details.
-
-We have included a `Tiltfile` file to make this easier when deploying to a cluster.
+You can open this project using Visual Studio Code. Make sure you have [VMware Tanzu Developer Tools for Visual Studio Code](https://docs.vmware.com/en/Tanzu-Application-Platform/1.0/tap/GUID-vscode-extension-about.html) installed.
 
 For best results use Tilt version v0.23.2 or later. You can install Tilt by following these instructions: https://docs.tilt.dev/install.html
 
-To set up the deployment environment set the CURRENT_CONTEXT environment variable.
+Follow instructions in the documentation for deploying your app for live update and debugging.
 
-Set CURRENT_CONTEXT using:
+These are the basic steps:
 
-```
-export CURRENT_CONTEXT=$(kubectl config current-context)
-```
-
-To build and deploy the app run:
-
-```
-tilt up
-```
-
-and follow the instructions (hitting space bar brings up the Tilt interface in your browser).
-
-To uninstall the app run:
-
-```
-tilt down
-```
-
-### Accessing the app deployed to your cluster
-
-If you don't have `curl` installed it can be installed using downloads here: https://curl.se/download.html
-
-Determine the URL to use for the accessing the app by running:
-
-```
-tanzu apps workload get hello-fun
-```
-
-To invoke the deployed function run the following `curl` command in another terminal window:
-
-```
-curl <URL> -w'\n' -H 'Content-Type: text/plain' -d Fun
-```
-
-This depends on the TAP installation having DNS configured for the Knative ingress.
+1. In Visual Studio Code, navigate to `Preferences > Settings > Extensions > Tanzu`.
+    - In the `Source Image` field, provide the destination image repository to publish an image containing your workload source code. This should match what is specified for `SOURCE_IMAGE` default in the Tiltfile.
+1. From the Command Palette (⇧⌘P), type "Tanzu", and select `Tanzu: Live Update Start`. You can view output from Tanzu Application Platform and from Tilt indicating that the container is being built and deployed.
+    - You see "Live Update starting..." in the status bar at the bottom right.
+    - Live update can take 1-3 minutes while the workload deploys and the Knative service becomes available.
+        > Note: Depending on the type of cluster you use, you might see an error similar to the following:
+        ```
+        ERROR: Stop! cluster-name might be production.
+        If you're sure you want to deploy there, add:
+                allow_k8s_contexts('cluster-name')
+        to your Tiltfile. Otherwise, switch k8s contexts and restart Tilt.
+        ```
+        Follow the instructions and add the line "allow_k8s_contexts('cluster-name')" to your Tiltfile.
+1. When the Live Update status in the status bar is visible, resolve to "Live Update Started", navigate to http://localhost:8080 in your browser, and view your running application.
+1. Make changes to the source code. When the codes is saved the running application will get updated.
+1. Either continue making changes, or stop and disable the live update when finished. Open the command palette (⇧⌘P), type "Tanzu", and select `Tanzu: Live Update Stop` or `Tanzu: Live Update Disable`.
 
 ### Deploying to Kubernetes as a TAP workload with Tanzu CLI
 
@@ -68,3 +43,21 @@ tanzu apps workload create hello-fun -f config/workload.yaml \
   --source-image <REPOSITORY-PREFIX>/hello-fun-source \
   --type web
 ```
+
+### Accessing the app deployed to your cluster
+
+If you don't have `curl` installed it can be installed using downloads here: https://curl.se/download.html
+
+Determine the URL to use for the accessing the app by running:
+
+```
+tanzu apps workload get hello-fun
+```
+
+To invoke the deployed function run the following `curl` command in another terminal window:
+
+```
+curl <URL> -w'\n' -H 'Content-Type: text/plain' -d Fun
+```
+
+This depends on the TAP installation having DNS configured for the Knative ingress.

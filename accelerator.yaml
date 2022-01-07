@@ -23,6 +23,14 @@ accelerator:
       text: Skip Kubernetes deployment
     defaultValue: workload
     required: true
+  - name: sourceRepositoryPrefix
+    inputType: text
+    label: The source repository prefix to use when pushing the source
+    description: The prefix for the repository where source can be stored during development
+    defaultValue: dev.local
+    dependsOn:
+      name: deploymentType
+      value: workload
 
 engine:
   merge:
@@ -68,9 +76,14 @@ engine:
         substitutions:
         - text: hello-fun
           with: "#artifactId"
+      - type: ReplaceText
+        substitutions:
+          - text: dev.local
+            with: "#sourceRepositoryPrefix"
       - type: RewritePath
         rewriteTo: "#filename"
     - include: [ "catalog/*.yaml" ]
+      condition: "#deploymentType != 'none'"
       chain:
       - type: ReplaceText
         substitutions:
