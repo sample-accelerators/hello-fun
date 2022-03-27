@@ -18,7 +18,8 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.1</spring-cloud.version>
 		<spring-native.version>0.11.3</spring-native.version>
-	    <jackson-bom.version>2.13.2.20220324</jackson-bom.version>
+		<!-- TODO: remove override of boot dependency when upgrading boot -->
+		<jackson-bom.version>2.13.2.20220324</jackson-bom.version>
 	</properties>
 
 	<licenses>
