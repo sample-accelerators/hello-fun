@@ -35,7 +35,7 @@ accelerator:
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "pom.xml", "README.md", "kubernetes/**", "catalog/*.yaml" ]
+      exclude: [ "pom.xml", "README.md", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
     - include: [ "pom.xml" ]
       chain:
       - type: ReplaceText
