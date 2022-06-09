@@ -99,4 +99,3 @@ engine:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: java-version
-  onConflict: UseLast
