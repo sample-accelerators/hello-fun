@@ -95,8 +95,6 @@ engine:
       - type: InvokeFragment
         condition: "#deploymentType == 'workload'"
         reference: live-update
-  - merge:
-    - include: [ "**" ]
-    - type: InvokeFragment
-      reference: java-version
-    onConflict: FavorForeign
+  - type: InvokeFragment
+    reference: java-version
+  onConflict: UseLast
