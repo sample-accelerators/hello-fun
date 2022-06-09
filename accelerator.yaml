@@ -46,58 +46,57 @@ accelerator:
         name: liveUpdateIDESupport
 
 engine:
-  merge:
-  - chain:
-    - merge:
-      - include: [ "**" ]
-        exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
-      - include: [ "pom.xml" ]
+  chain:
+  - merge:
+    - include: [ "**" ]
+      exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
+    - include: [ "pom.xml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+    - include: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+      condition: "#deploymentType == 'k8s-simple'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'kubernetes/' + #filename"
+    - include: [ "kubernetes/k8s/Tiltfile" ]
+      condition: "#deploymentType == 'k8s-simple'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "#filename"
+    - name: README
+      type: Combo
+      onConflict: Append
+      sources:
+      - include: [ "README.md"]
         chain:
         - type: ReplaceText
           substitutions:
-          - text: hello-fun
+          - text: hello-fun repo
             with: "#artifactId"
-      - include: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+      - include: [ "kubernetes/k8s/DEPLOYING.md" ]
         condition: "#deploymentType == 'k8s-simple'"
         chain:
-        - type: ReplaceText
-          substitutions:
-          - text: hello-fun
-            with: "#artifactId"
         - type: RewritePath
-          rewriteTo: "'kubernetes/' + #filename"
-      - include: [ "kubernetes/k8s/Tiltfile" ]
-        condition: "#deploymentType == 'k8s-simple'"
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: hello-fun
-            with: "#artifactId"
-        - type: RewritePath
-          rewriteTo: "#filename"
-      - name: README
-        type: Combo
-        onConflict: Append
-        sources:
-        - include: [ "README.md"]
-          chain:
-          - type: ReplaceText
-            substitutions:
-            - text: hello-fun repo
-              with: "#artifactId"
-        - include: [ "kubernetes/k8s/DEPLOYING.md" ]
-          condition: "#deploymentType == 'k8s-simple'"
-          chain:
-          - type: RewritePath
-            rewriteTo: "'README.md'"
-      - type: InvokeFragment
-        condition: "#deploymentType == 'workload'"
-        reference: tap-initialize
-      - type: InvokeFragment
-        condition: "#deploymentType == 'workload'"
-        reference: live-update
-    - merge:
-      - include: [ "**" ]
-      - type: InvokeFragment
-        reference: java-version
-    onConflict: UseLast
+          rewriteTo: "'README.md'"
+    - type: InvokeFragment
+      condition: "#deploymentType == 'workload'"
+      reference: tap-initialize
+    - type: InvokeFragment
+      condition: "#deploymentType == 'workload'"
+      reference: live-update
+  - merge:
+    - include: [ "**" ]
+    - type: InvokeFragment
+      reference: java-version
+  onConflict: UseLast
