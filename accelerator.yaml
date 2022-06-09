@@ -46,7 +46,7 @@ accelerator:
         name: liveUpdateIDESupport
 
 engine:
-  chain:
+  merge:
   - merge:
       - include: [ "**" ]
         exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
@@ -95,6 +95,5 @@ engine:
       - type: InvokeFragment
         condition: "#deploymentType == 'workload'"
         reference: live-update
-  - include: [ "**" ]
   - type: InvokeFragment
     reference: java-version
