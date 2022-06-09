@@ -35,6 +35,7 @@ accelerator:
       dependsOn:
         name: deploymentType
         value: workload
+    - name: "*"
   - name: live-update
     expose:
     - name: liveUpdateIDESupport
@@ -44,6 +45,7 @@ accelerator:
     - name: sourceRepositoryPrefix
       dependsOn:
         name: liveUpdateIDESupport
+    - name: "*"
 
 engine:
   chain:
