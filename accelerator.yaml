@@ -97,4 +97,4 @@ engine:
         reference: live-update
   - type: InvokeFragment
     reference: java-version
-  onConflict: FavorOwn
+  onConflict: UseLast
