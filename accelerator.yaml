@@ -34,6 +34,10 @@ accelerator:
       dependsOn:
         name: deploymentType
         value: workload
+    - name: includeHasTests
+      dependsOn:
+        name: deploymentType
+        value: workload
     - name: "*"
   - name: live-update
     expose:
