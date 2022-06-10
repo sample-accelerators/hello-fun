@@ -24,7 +24,6 @@ accelerator:
     defaultValue: workload
     required: true
   imports:
-  - name: java-version
   - name: tap-initialize
     expose:
     - name: gitRepository
@@ -46,6 +45,7 @@ accelerator:
       dependsOn:
         name: liveUpdateIDESupport
     - name: "*"
+  - name: java-version
 
 engine:
   chain:
