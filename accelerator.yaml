@@ -23,14 +23,48 @@ accelerator:
       text: Skip Kubernetes deployment
     defaultValue: workload
     required: true
-  - name: sourceRepositoryPrefix
-    inputType: text
-    label: The source repository prefix to use when pushing the source
-    description: The prefix for the repository where source can be stored during development
-    defaultValue: dev.local
+  # - name: sourceRepositoryPrefix
+    # inputType: text
+    # label: The source repository prefix to use when pushing the source
+    # description: The prefix for the repository where source can be stored during development
+    # defaultValue: dev.local
+    # dependsOn:
+    #   name: deploymentType
+    #   value: workload
+  - defaultValue: main
     dependsOn:
       name: deploymentType
       value: workload
+    description: The Git branch you plan to use for this new project
+    display: true
+    inputType: text
+    label: Git Branch for new project
+    name: gitBranch
+    required: true
+  - dataType: boolean
+    defaultValue: true
+    dependsOn:
+      name: deploymentType
+      value: workload
+    display: true
+    inputType: checkbox
+    label: Include TAP IDE Support for Java Workloads
+    name: liveUpdateIDESupport
+  - defaultValue: dev.local
+    dependsOn:
+      name: liveUpdateIDESupport
+    description: The prefix for the repository where source can be stored during development
+    inputType: text
+    label: The source repository prefix to use when pushing the source
+    name: sourceRepositoryPrefix
+  - defaultValue: dev.local-2
+    dependsOn:
+      name: sourceRepositoryPrefix
+      value: test
+    description: Testing recursion
+    inputType: text
+    label: Testing recursion
+    name: innserSourceRepositoryPrefix
 
 engine:
   merge:
