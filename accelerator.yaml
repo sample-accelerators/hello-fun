@@ -14,6 +14,7 @@ accelerator:
   options:
   - name: deploymentType
     inputType: select
+    label: Deployment type
     choices:
     - value: workload
       text: TAP workload
@@ -23,17 +24,37 @@ accelerator:
       text: Skip Kubernetes deployment
     defaultValue: workload
     required: true
-  - name: sourceRepositoryPrefix
-    inputType: text
-    label: The source repository prefix to use when pushing the source
-    description: The prefix for the repository where source can be stored during development
-    defaultValue: dev.local
-    dependsOn:
-      name: deploymentType
-      value: workload
+  imports:
+  - name: tap-initialize
+    expose:
+    - name: gitRepository
+      dependsOn:
+        name: deploymentType
+        value: workload
+    - name: gitBranch
+      dependsOn:
+        name: deploymentType
+        value: workload
+    - name: includeHasTests
+      dependsOn:
+        name: deploymentType
+        value: workload
+    - name: "*"
+  - name: live-update
+    expose:
+    - name: liveUpdateIDESupport
+      dependsOn:
+        name: deploymentType
+        value: workload
+    - name: sourceRepositoryPrefix
+      dependsOn:
+        name: liveUpdateIDESupport
+    - name: "*"
+  - name: java-version
 
 engine:
-  merge:
+  chain:
+  - merge:
     - include: [ "**" ]
       exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
     - include: [ "pom.xml" ]
@@ -60,35 +81,6 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "#filename"
-    - include: [ "kubernetes/tap/workload.yaml" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: ": hello-fun"
-          with: "': ' + #artifactId"
-      - type: RewritePath
-        rewriteTo: "'config/' + #filename"
-    - include: [ "kubernetes/tap/Tiltfile" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
-      - type: ReplaceText
-        substitutions:
-          - text: dev.local
-            with: "#sourceRepositoryPrefix"
-      - type: RewritePath
-        rewriteTo: "#filename"
-    - include: [ "catalog/*.yaml" ]
-      condition: "#deploymentType != 'none'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
     - name: README
       type: Combo
       onConflict: Append
@@ -97,19 +89,20 @@ engine:
         chain:
         - type: ReplaceText
           substitutions:
-          - text: hello-fun template repo
+          - text: hello-fun repo
             with: "#artifactId"
       - include: [ "kubernetes/k8s/DEPLOYING.md" ]
         condition: "#deploymentType == 'k8s-simple'"
         chain:
         - type: RewritePath
           rewriteTo: "'README.md'"
-      - include: [ "kubernetes/tap/DEPLOYING.md" ]
-        condition: "#deploymentType == 'workload'"
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: hello-fun
-            with: "#artifactId"
-        - type: RewritePath
-          rewriteTo: "'README.md'"
+    - type: InvokeFragment
+      condition: "#deploymentType == 'workload'"
+      reference: tap-initialize
+    - type: InvokeFragment
+      condition: "#deploymentType == 'workload'"
+      reference: live-update
+  - merge:
+    - include: [ "**" ]
+    - type: InvokeFragment
+      reference: java-version
