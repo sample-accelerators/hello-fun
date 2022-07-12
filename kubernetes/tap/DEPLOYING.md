@@ -57,7 +57,7 @@ tanzu apps workload get hello-fun
 You can assign the URL to a variable to make it easier to reference it:
 
 ```
- URL=$(kubectl get services.serving.knative.dev/hello-fun -o=jsonpath='{.status.address.url}')
+URL=$(kubectl get services.serving.knative.dev/hello-fun -o=jsonpath='{.status.url}')
  ```
 
 To invoke the deployed function run the following `curl` command in another terminal window:
