@@ -54,10 +54,16 @@ Determine the URL to use for the accessing the app by running:
 tanzu apps workload get hello-fun
 ```
 
+You can assign the URL to a variable to make it easier to reference it:
+
+```
+ URL=$(kubectl get services.serving.knative.dev/hello-fun -o=jsonpath='{.status.address.url}')
+ ```
+
 To invoke the deployed function run the following `curl` command in another terminal window:
 
 ```
-curl <URL> -w'\n' -H 'Content-Type: text/plain' -d Fun
+curl ${URL} -w'\n' -H 'Content-Type: text/plain' -d Fun
 ```
 
 This depends on the TAP installation having DNS configured for the Knative ingress.
