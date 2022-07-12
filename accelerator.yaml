@@ -86,6 +86,11 @@ engine:
             with: "#sourceRepositoryPrefix"
       - type: RewritePath
         rewriteTo: "#filename"
+    - include: [ "kubernetes/tap/.tanzuignore" ]
+      condition: "#deploymentType == 'workload'"
+      chain:
+      - type: RewritePath
+        rewriteTo: "#filename"
     - include: [ "catalog/*.yaml" ]
       condition: "#deploymentType != 'none'"
       chain:
