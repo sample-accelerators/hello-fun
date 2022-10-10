@@ -1,5 +1,8 @@
 # hello-fun repo
 
+> **NOTE** This repo has been archived and the sample has been renamed to `Spring Cloud Serverless` and moved to:  
+> https://github.com/vmware-tanzu/application-accelerator-samples/tree/main/spring-cloud-serverless
+
 This repo provides a simple Hello web app based on Spring Boot and Spring Cloud Function.
 
 It can be deployed as a standalone web app, as a Tanzu Application Platform workload resource or, as a Kubernetes Deployment and Service.
